@@ -1,5 +1,4 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { ipcRenderer } from 'electron';
 
 declare var window: any;
 
