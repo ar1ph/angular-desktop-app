@@ -1,0 +1,30 @@
+<mat-form-field>
+  <mat-label>Model</mat-label>
+  <mat-select [(value)]="selectedModel">
+    <mat-option *ngFor="let model of models" [value]="model">
+      {{ model }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<br>
+<mat-form-field>
+    <mat-label>Strategy</mat-label>
+    <mat-select [(value)]="selectedStrategy">
+      <mat-option *ngFor="let strategy of strategies" [value]="strategy">
+        {{strategy}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+<br />
+<mat-form-field>
+    <mat-label>Query</mat-label>
+    <input matInput [(ngModel)]="query">
+  </mat-form-field>
+<br />
+<button mat-stroked-button (click)="openDirectory()">Select Directory</button>
+<br>
+<button mat-raised-button color="primary" (click)="startBenchmark()">Benchmark</button>
+
+<h2>Selected Path: {{ selectedPath }}</h2>
+<h3>Files:</h3>
+<p *ngFor="let file of files">{{ file }}</p>
