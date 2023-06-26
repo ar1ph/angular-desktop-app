@@ -34,6 +34,7 @@ export class DirSelectorComponent {
       Query: "${this.query}"
       `,
     });
+    window.electron.startBenchmark(this.selectedModel, this.selectedStrategy, this.query, this.selectedPath)
   }
 
   ngOnInit() {
@@ -46,9 +47,6 @@ export class DirSelectorComponent {
     window.electron.onDirectoryFiles((content: any) => {
       this.files = content;
       this.cdr.detectChanges();
-      new window.Notification('Content Read', {
-        body: 'Directory has been read and the content can now be seen in the app',
-      });
     });
   }
 
