@@ -20,11 +20,19 @@
     <mat-label>Query</mat-label>
     <input matInput [(ngModel)]="query">
   </mat-form-field>
+<mat-form-field>
+  <mat-label>Source</mat-label>
+  <mat-select [(value)]="selectedSource">
+    <mat-option *ngFor="let file of files" [value]="file">
+      {{file}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 <br />
 <button mat-stroked-button (click)="openDirectory()">Select Directory</button>
 <br>
 <button mat-raised-button color="primary" (click)="startBenchmark()">Benchmark</button>
 
-<h2>Selected Path: {{ selectedPath }}</h2>
+<!-- <h2>Selected Path: {{ selectedPath }}</h2>
 <h3>Files:</h3>
-<p *ngFor="let file of files">{{ file }}</p>
+<p *ngFor="let file of files">{{ file }}</p> -->

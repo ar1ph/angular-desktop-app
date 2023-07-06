@@ -10,10 +10,17 @@ declare var window: any;
 export class DirSelectorComponent {
   selectedPath: string = '';
   files: any[] = [];
-  models: string[] = ['GPT-3', 'GPT-4', 'GPT-5'];
-  strategies: string[] = ['l2', 'cosine', 'manhattan'];
+  models: string[] = [
+    'text-embedding-ada-002',
+    'bert_uncased_L-12_H-768_A-12',
+    'all-MiniLM-L6-v2',
+    'scibert_scivocab_uncased',
+    'Bio_ClinicalBERT',
+  ];
+  strategies: string[] = ['l2', 'cosine', 'ip'];
   selectedModel = '';
   selectedStrategy = '';
+  selectedSource = '';
   query = '';
 
   constructor(private cdr: ChangeDetectorRef) {}
@@ -34,7 +41,12 @@ export class DirSelectorComponent {
       Query: "${this.query}"
       `,
     });
-    window.electron.startBenchmark(this.selectedModel, this.selectedStrategy, this.query, this.selectedPath)
+    window.electron.startBenchmark(
+      this.selectedModel,
+      this.selectedStrategy,
+      this.query,
+      this.selectedPath
+    );
   }
 
   ngOnInit() {

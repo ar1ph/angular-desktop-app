@@ -40,3 +40,14 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+#Python
+*.ipynb
+lib/*.json
+lib/__pycache__/
+data/
+data_temp/
+*yml
+__pycache__/
+volumes/
+database/

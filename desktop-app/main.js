@@ -72,14 +72,14 @@ ipcMain.on(
       pythonPath:
         "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
       pythonOptions: ["-u"],
-      scriptPath: "./",
+      scriptPath: "./scripts",
       args: [JSON.stringify({ selectedModel, selectedStrategy, query, selectedPath })],
     };
 
-    let pyshell = new PythonShell("test.py", options);
+    let pyshell = new PythonShell("Combination.py", options);
 
     pyshell.on("message", function (message) {
-      console.log("PYTHON MESSAGE---------------------------\n",message);
+      console.log("PYTHON OUTPUT---------------------------\n",message);
     });
 
     pyshell.end(function (err, code, signal) {
