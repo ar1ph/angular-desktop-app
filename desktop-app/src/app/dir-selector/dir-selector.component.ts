@@ -8,7 +8,6 @@ declare var window: any;
   styleUrls: ['./dir-selector.component.css'],
 })
 export class DirSelectorComponent {
-  selectedPath: string = '';
   files: any[] = [];
   models: string[] = [
     'text-embedding-ada-002',
@@ -18,10 +17,13 @@ export class DirSelectorComponent {
     'Bio_ClinicalBERT',
   ];
   strategies: string[] = ['l2', 'cosine', 'ip'];
+
   selectedModel = '';
   selectedStrategy = '';
-  selectedSource = '';
+  
   query = '';
+  selectedSource = '';
+  selectedPath: string = '';
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -36,6 +38,7 @@ export class DirSelectorComponent {
   startBenchmark() {
     new window.Notification('Bencmark Started', {
       body: `Path: "${this.selectedPath}"
+      Source: "${this.selectedSource}"
       Model: "${this.selectedModel}"
       Strategy: "${this.selectedStrategy}"
       Query: "${this.query}"
@@ -45,7 +48,8 @@ export class DirSelectorComponent {
       this.selectedModel,
       this.selectedStrategy,
       this.query,
-      this.selectedPath
+      this.selectedPath,
+      this.selectedSource
     );
   }
 

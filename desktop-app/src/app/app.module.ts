@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgFor } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+
 
 @NgModule({
   declarations: [AppComponent, DirSelectorComponent],
@@ -23,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     FormsModule,
     NgFor,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent],

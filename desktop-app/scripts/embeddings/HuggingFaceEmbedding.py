@@ -46,7 +46,7 @@ def main():
     # print(test.from_text('Hello World'))
     # print(test.from_texts(['Hello', 'world']))
     # print(test.get_dimension())
-    print(test.get_function())
+    # print(test.get_function())
 
 
 
