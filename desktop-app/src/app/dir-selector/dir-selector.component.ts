@@ -2,6 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 
+
 declare var window: any;
 
 @Component({
@@ -13,10 +14,10 @@ export class DirSelectorComponent {
   files: any[] = [];
   models: string[] = [
     'text-embedding-ada-002',
-    'bert_uncased_L-12_H-768_A-12',
+    'google/bert_uncased_L-12_H-768_A-12',
     'all-MiniLM-L6-v2',
-    'scibert_scivocab_uncased',
-    'Bio_ClinicalBERT',
+    'allenai/scibert_scivocab_uncased',
+    'emilyalsentzer/Bio_ClinicalBERT',
   ];
   strategies: string[] = ['l2', 'cosine', 'ip'];
 
@@ -42,10 +43,10 @@ export class DirSelectorComponent {
     {
       'Embedding Model': 'TEST_ROW',
       'DB Type': 'Chroma',
-      'Strategy': 'ip',
+      Strategy: 'ip',
       'Average k': 4,
-      'Sigma': 1,
-      'Frequency': 3,
+      Sigma: 1,
+      Frequency: 3,
     },
   ];
 
@@ -77,7 +78,7 @@ export class DirSelectorComponent {
       this.selectedPath,
       this.selectedSource
     );
-    this.benchmarkDisabled = true
+    this.benchmarkDisabled = true;
   }
 
   ngOnInit() {
@@ -93,6 +94,7 @@ export class DirSelectorComponent {
     });
 
     window.electron.onBenchmarkData((message: any) => {
+      this.benchmarkDisabled = !this.benchmarkDisabled;
       let data = JSON.parse(message);
       console.log(data[0]);
       this.dataSource.push(data[0]);
@@ -103,7 +105,7 @@ export class DirSelectorComponent {
       });
       this.table.renderRows();
       this.cdr.detectChanges();
-      this.benchmarkDisabled = false
+      
     });
   }
 

@@ -12,6 +12,7 @@ import { NgFor } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {MatTableModule} from '@angular/material/table';
     FormsModule,
     NgFor,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],

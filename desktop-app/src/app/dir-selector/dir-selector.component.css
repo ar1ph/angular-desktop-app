@@ -7,3 +7,14 @@ button {
     padding: 10px;
     margin: 10px;
 }
+
+.oneLine {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+mat-spinner{
+    width: 30px;
+    height: 30px;
+    margin-top: 12px;
+}
