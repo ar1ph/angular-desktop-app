@@ -67,7 +67,7 @@ class BaseVectorstore(ABC):
         
         
         file_paths = cls.retrieve_file_paths(data_directory=data_directory)
-        print("Data directory: ", data_directory)
+        #print("Data directory: ", data_directory)
         loaded_docs = cls.load_documents(file_paths=file_paths)
         splitter = RecursiveCharacterTextSplitter(chunk_size=750,
                                                   chunk_overlap=100)

@@ -24,4 +24,11 @@ contextBridge.exposeInMainWorld("electron", {
       selectedPath,  
       selectedSource
     ),
+  onBenchmarkData: (callback) => {
+    ipcRenderer.on("benchmark-data", (event, message) => callback(message));
+  },
+  removeBenchmarkDataListener: () => {
+    ipcRenderer.removeAllListeners("benchmark-data");
+  },
+
 });

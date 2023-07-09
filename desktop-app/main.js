@@ -80,6 +80,7 @@ ipcMain.on(
 
     pyshell.on("message", function (message) {
       console.log("PYTHON OUTPUT---------------------------\n",message);
+      event.sender.send("benchmark-data", message);
     });
 
     pyshell.end(function (err, code, signal) {

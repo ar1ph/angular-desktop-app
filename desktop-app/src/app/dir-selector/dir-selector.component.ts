@@ -1,4 +1,6 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 
 declare var window: any;
 
@@ -20,10 +22,34 @@ export class DirSelectorComponent {
 
   selectedModel = '';
   selectedStrategy = '';
-  
+
   query = '';
   selectedSource = '';
   selectedPath: string = '';
+
+  benchmarkDisabled = false;
+
+  displayedColumns: string[] = [
+    'Embedding Model',
+    'DB Type',
+    'Strategy',
+    'Average k',
+    'Sigma',
+    'Frequency',
+  ];
+
+  dataSource: any[] = [
+    {
+      'Embedding Model': 'TEST_ROW',
+      'DB Type': 'Chroma',
+      'Strategy': 'ip',
+      'Average k': 4,
+      'Sigma': 1,
+      'Frequency': 3,
+    },
+  ];
+
+  @ViewChild(MatTable) table!: MatTable<any>;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -51,6 +77,7 @@ export class DirSelectorComponent {
       this.selectedPath,
       this.selectedSource
     );
+    this.benchmarkDisabled = true
   }
 
   ngOnInit() {
@@ -64,10 +91,25 @@ export class DirSelectorComponent {
       this.files = content;
       this.cdr.detectChanges();
     });
+
+    window.electron.onBenchmarkData((message: any) => {
+      let data = JSON.parse(message);
+      console.log(data[0]);
+      this.dataSource.push(data[0]);
+      this.cdr.detectChanges();
+      console.log(this.dataSource);
+      new window.Notification('Bencmark Finished', {
+        body: `Benchmark results can now be seen in the app. `,
+      });
+      this.table.renderRows();
+      this.cdr.detectChanges();
+      this.benchmarkDisabled = false
+    });
   }
 
   ngOnDestroy() {
     window.electron.removeDirectorySelectedListener();
     window.electron.removeDirectoryFilesListener();
+    window.electron.removeBenchmarkDataListener();
   }
 }
