@@ -2,7 +2,6 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 
-
 declare var window: any;
 
 @Component({
@@ -38,6 +37,17 @@ export class DirSelectorComponent {
     'Sigma',
     'Frequency',
   ];
+
+  // To hold the queries and sources
+  lines: { query: string; source: string }[] = [{ query: '', source: '' }];
+  
+  addLine() {
+    this.lines.push({ query: '', source: '' });
+  }
+
+  removeLine(index: number) {
+    this.lines.splice(index, 1);
+  }
 
   dataSource: any[] = [
     {
@@ -105,7 +115,6 @@ export class DirSelectorComponent {
       });
       this.table.renderRows();
       this.cdr.detectChanges();
-      
     });
   }
 

@@ -16,19 +16,32 @@
   </mat-select>
 </mat-form-field>
 <br />
-<div class="oneLine">
+<div class="oneLine" *ngFor="let line of lines; let i = index">
   <mat-form-field>
     <mat-label>Query</mat-label>
-    <input matInput [(ngModel)]="query" />
+    <input matInput [(ngModel)]="line.query" />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Source</mat-label>
-    <mat-select [(value)]="selectedSource">
+    <mat-select [(value)]="line.source">
       <mat-option *ngFor="let file of files" [value]="file">
         {{ file }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button
+    mat-icon-button
+    aria-label="Example icon button with a vertical three dot icon"
+    (click)="removeLine(i)"
+    *ngIf="lines.length != 1"
+  >
+    <mat-icon>cancel_outline</mat-icon>
+  </button>
+</div>
+<div id="add_fab">
+  <button mat-fab extended color="primary" (click)="addLine()">
+    <mat-icon>add</mat-icon>Add Query
+  </button>
 </div>
 <br />
 <div class="oneLine">

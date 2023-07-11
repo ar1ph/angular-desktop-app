@@ -18,3 +18,12 @@ mat-spinner{
     height: 30px;
     margin-top: 12px;
 }
+
+#add_fab {
+    display: flex;
+    justify-content: flex-end;
+}
+
+mat-icon {
+    padding: 5px;
+}
