@@ -15,13 +15,20 @@ contextBridge.exposeInMainWorld("electron", {
   removeDirectoryFilesListener: () => {
     ipcRenderer.removeAllListeners("directory-files");
   },
-  startBenchmark: (selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines) =>
+  startBenchmark: (
+    selectedModel,
+    selectedStrategy,
+    query,
+    selectedPath,
+    selectedSource,
+    lines
+  ) =>
     ipcRenderer.send(
       "start-benchmark",
       selectedModel,
       selectedStrategy,
       query,
-      selectedPath,  
+      selectedPath,
       selectedSource,
       lines
     ),
@@ -31,5 +38,12 @@ contextBridge.exposeInMainWorld("electron", {
   removeBenchmarkDataListener: () => {
     ipcRenderer.removeAllListeners("benchmark-data");
   },
-
+  generateQuery: (path, source) =>
+    ipcRenderer.send("generate-query", path, source),
+  onQuery: (callback) => {
+    ipcRenderer.on("query", (event, query) => callback(query));
+  },
+  removeQueryListener: () => {
+    ipcRenderer.removeAllListeners("query");
+  },
 });

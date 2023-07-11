@@ -24,6 +24,6 @@ mat-spinner{
     justify-content: flex-end;
 }
 
-mat-icon {
+#addIcon{
     padding: 5px;
 }

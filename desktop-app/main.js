@@ -91,3 +91,33 @@ ipcMain.on(
     });
   }
 );
+
+ipcMain.on(
+  "start-benchmark",
+  (path, source) => {
+    let options = {
+      mode: "text",
+      pythonPath:
+        "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      pythonOptions: ["-u"],
+      scriptPath: "./scripts",
+      args: [JSON.stringify({ selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines })],
+    };
+
+    let pyshell = new PythonShell("QueryGeneration.py", options);
+
+    pyshell.on("message", function (message) {
+      console.log("PYTHON QUERY---------------------------\n",message);
+      event.sender.send("query", message);
+    });
+
+    pyshell.end(function (err, code, signal) {
+      if (err) throw err;
+      console.log("The exit code was: " + code);
+      console.log("The exit signal was: " + signal);
+      console.log("finished");
+    });
+  }
+)
+
+

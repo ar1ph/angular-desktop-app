@@ -36,12 +36,12 @@ export class DirSelectorComponent {
     'Average k',
     'Sigma',
     'Frequency',
-    'Queries'
+    'Queries',
   ];
 
   // To hold the queries and sources
   lines: { query: string; source: string }[] = [{ query: '', source: '' }];
-  
+
   addLine() {
     this.lines.push({ query: '', source: '' });
   }
@@ -58,7 +58,7 @@ export class DirSelectorComponent {
       'Average k': 4,
       Sigma: 1,
       Frequency: 3,
-      Queries: 1
+      Queries: 1,
     },
   ];
 
@@ -92,6 +92,13 @@ export class DirSelectorComponent {
       this.lines
     );
     this.benchmarkDisabled = true;
+  }
+
+  generateQuery(i: number) {
+    let source = this.lines[i].source;
+    let path = this.selectedPath;
+    window.electron.generateQuery(source, path);
+    console.log('PPPAATTHHH', source, path);
   }
 
   ngOnInit() {
