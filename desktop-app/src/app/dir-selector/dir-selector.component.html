@@ -16,18 +16,20 @@
   </mat-select>
 </mat-form-field>
 <br />
-<mat-form-field>
-  <mat-label>Query</mat-label>
-  <input matInput [(ngModel)]="query" />
-</mat-form-field>
-<mat-form-field>
-  <mat-label>Source</mat-label>
-  <mat-select [(value)]="selectedSource">
-    <mat-option *ngFor="let file of files" [value]="file">
-      {{ file }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="oneLine">
+  <mat-form-field>
+    <mat-label>Query</mat-label>
+    <input matInput [(ngModel)]="query" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Source</mat-label>
+    <mat-select [(value)]="selectedSource">
+      <mat-option *ngFor="let file of files" [value]="file">
+        {{ file }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <br />
 <div class="oneLine">
   <button mat-stroked-button (click)="openDirectory()">Select Directory</button>
@@ -39,7 +41,7 @@
     mat-raised-button
     color="primary"
     (click)="startBenchmark()"
-    
+    [disabled]="benchmarkDisabled"
   >
     Benchmark
   </button>
