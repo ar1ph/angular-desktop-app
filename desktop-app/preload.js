@@ -15,14 +15,15 @@ contextBridge.exposeInMainWorld("electron", {
   removeDirectoryFilesListener: () => {
     ipcRenderer.removeAllListeners("directory-files");
   },
-  startBenchmark: (selectedModel, selectedStrategy, query, selectedPath, selectedSource) =>
+  startBenchmark: (selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines) =>
     ipcRenderer.send(
       "start-benchmark",
       selectedModel,
       selectedStrategy,
       query,
       selectedPath,  
-      selectedSource
+      selectedSource,
+      lines
     ),
   onBenchmarkData: (callback) => {
     ipcRenderer.on("benchmark-data", (event, message) => callback(message));

@@ -66,14 +66,14 @@ ipcMain.on("display-files", (event, path) => {
 
 ipcMain.on(
   "start-benchmark",
-  (event, selectedModel, selectedStrategy, query, selectedPath, selectedSource) => {
+  (event, selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines) => {
     let options = {
       mode: "text",
       pythonPath:
         "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
       pythonOptions: ["-u"],
       scriptPath: "./scripts",
-      args: [JSON.stringify({ selectedModel, selectedStrategy, query, selectedPath, selectedSource })],
+      args: [JSON.stringify({ selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines })],
     };
 
     let pyshell = new PythonShell("Combination.py", options);

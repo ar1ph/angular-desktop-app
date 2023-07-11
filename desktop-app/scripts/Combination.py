@@ -170,7 +170,7 @@ class Combination(object):
 
         # Calculate average 'k' and sigma
         avg = round(sum(all_k) / len(all_k))
-        sigma = 1
+        sigma = 'n/a'
         if (len(all_k) > 1):
             sigma = round(statistics.stdev(all_k), 2)
 
@@ -231,8 +231,9 @@ def main():
     selectedModel = data['selectedModel']
     selectedStrategy = data['selectedStrategy']
     selectedPath = data['selectedPath']
-    query = data['query']
-    source = data['selectedSource']
+    # query = data['query']
+    # source = data['selectedSource']
+    lines = data['lines']
 
     # Initialize embedding model using models in embeddings directory
     emb_model = HuggingFaceEmbedding(selectedModel)
@@ -246,7 +247,14 @@ def main():
     assets_directory = os.path.join(os.path.abspath(os.pardir),
                                     "assets")
 
-    map = {query: [source]}
+    # If using single query
+    # map = {query: [source]}
+
+    map = {}
+    for line in lines:
+        query = line['query']
+        source = line['source']
+        map[query] = [source]
 
     queries_path = os.path.join(assets_directory, 'queries_temp.json')
     combination = Combination(db_model=db_model,
@@ -256,10 +264,11 @@ def main():
     reports = [combination.get_report(matches=1)]
     # TODO: Need to add the number of documents in the report properly
     reports[0]['Frequency'] = 3
+    reports[0]['Queries'] = len(lines)
     print(json.dumps(reports))
-    # combination.save_reports(all_reports=reports,
-    #                          file_path=os.path.join(os.path.abspath(os.pardir),
-    #                                                 os.path.join("benchmark", "benchmark.txt")))
+    # # combination.save_reports(all_reports=reports,
+    # #                          file_path=os.path.join(os.path.abspath(os.pardir),
+    # #                                                 os.path.join("benchmark", "benchmark.txt")))
 
 
 if __name__ == "__main__":

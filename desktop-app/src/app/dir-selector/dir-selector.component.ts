@@ -36,6 +36,7 @@ export class DirSelectorComponent {
     'Average k',
     'Sigma',
     'Frequency',
+    'Queries'
   ];
 
   // To hold the queries and sources
@@ -52,11 +53,12 @@ export class DirSelectorComponent {
   dataSource: any[] = [
     {
       'Embedding Model': 'TEST_ROW',
-      'DB Type': 'Chroma',
-      Strategy: 'ip',
+      'DB Type': 'Test',
+      Strategy: 'test',
       'Average k': 4,
       Sigma: 1,
       Frequency: 3,
+      Queries: 1
     },
   ];
 
@@ -86,7 +88,8 @@ export class DirSelectorComponent {
       this.selectedStrategy,
       this.query,
       this.selectedPath,
-      this.selectedSource
+      this.selectedSource,
+      this.lines
     );
     this.benchmarkDisabled = true;
   }
@@ -110,7 +113,7 @@ export class DirSelectorComponent {
       this.dataSource.push(data[0]);
       this.cdr.detectChanges();
       console.log(this.dataSource);
-      new window.Notification('Bencmark Finished', {
+      new window.Notification('Benchmark Finished', {
         body: `Benchmark results can now be seen in the app. `,
       });
       this.table.renderRows();
