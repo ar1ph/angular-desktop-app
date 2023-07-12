@@ -28,6 +28,7 @@ export class DirSelectorComponent {
   selectedPath: string = '';
 
   benchmarkDisabled = false;
+  queryDisabled = false;
 
   displayedColumns: string[] = [
     'Embedding Model',
@@ -94,11 +95,12 @@ export class DirSelectorComponent {
     this.benchmarkDisabled = true;
   }
 
-  generateQuery(i: number) {
-    let source = this.lines[i].source;
+  generateQuery(index: number) {
+    let source = this.lines[index].source;
     let path = this.selectedPath;
-    window.electron.generateQuery(source, path);
-    console.log('PPPAATTHHH', source, path);
+    window.electron.generateQuery(path, source, index);
+    this.queryDisabled = true;
+    console.log('PPPAATTHHH', source, path, index);
   }
 
   ngOnInit() {
@@ -124,6 +126,15 @@ export class DirSelectorComponent {
         body: `Benchmark results can now be seen in the app. `,
       });
       this.table.renderRows();
+      this.cdr.detectChanges();
+    });
+
+    window.electron.onQuery((message: any) => {
+      let array = JSON.parse(message)
+      let query = array[0]
+      let index = array[1]
+      this.lines[index].query = query;
+      this.queryDisabled = !this.queryDisabled;
       this.cdr.detectChanges();
     });
   }

@@ -38,10 +38,10 @@ contextBridge.exposeInMainWorld("electron", {
   removeBenchmarkDataListener: () => {
     ipcRenderer.removeAllListeners("benchmark-data");
   },
-  generateQuery: (path, source) =>
-    ipcRenderer.send("generate-query", path, source),
+  generateQuery: (path, source, index) =>
+    ipcRenderer.send("generate-query", path, source, index),
   onQuery: (callback) => {
-    ipcRenderer.on("query", (event, query) => callback(query));
+    ipcRenderer.on("query", (event, message) => callback(message));
   },
   removeQueryListener: () => {
     ipcRenderer.removeAllListeners("query");

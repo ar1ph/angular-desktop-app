@@ -13,11 +13,12 @@ button {
     flex-wrap: nowrap;
 }
 
-mat-spinner{
+#tableSpinner{
     width: 30px;
     height: 30px;
     margin-top: 12px;
 }
+
 
 #add_fab {
     display: flex;
