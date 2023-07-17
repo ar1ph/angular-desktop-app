@@ -1,6 +1,13 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import { BenchmarkDisabledService } from '../benchmark-disabled.service';
 
 declare var window: any;
 
@@ -12,7 +19,7 @@ declare var window: any;
 export class DirSelectorComponent {
   files: any[] = [];
   models: string[] = [
-    'text-embedding-ada-002',
+    // 'text-embedding-ada-002',
     'google/bert_uncased_L-12_H-768_A-12',
     'all-MiniLM-L6-v2',
     'allenai/scibert_scivocab_uncased',
@@ -30,16 +37,6 @@ export class DirSelectorComponent {
   benchmarkDisabled = false;
   queryDisabled = false;
 
-  displayedColumns: string[] = [
-    'Embedding Model',
-    'DB Type',
-    'Strategy',
-    'Average k',
-    'Sigma',
-    'Frequency',
-    'Queries',
-  ];
-
   // To hold the queries and sources
   lines: { query: string; source: string }[] = [{ query: '', source: '' }];
 
@@ -51,22 +48,23 @@ export class DirSelectorComponent {
     this.lines.splice(index, 1);
   }
 
-  dataSource: any[] = [
-    {
-      'Embedding Model': 'TEST_ROW',
-      'DB Type': 'Test',
-      Strategy: 'test',
-      'Average k': 4,
-      Sigma: 1,
-      Frequency: 3,
-      Queries: 1,
-    },
-  ];
-
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private benchmarkDisabledService: BenchmarkDisabledService
+  ) {
+    this.benchmarkDisabledService.benchmarkDisabled$.subscribe(
+      (status: boolean) => {
+        this.benchmarkDisabled = status;
+        this.cdr.detectChanges()
+      }
+    );
+  }
 
+  changeBenchmarkDisableStatus() {
+    
+  }
   openDirectory() {
     window.electron.openDirectory();
   }
@@ -76,7 +74,7 @@ export class DirSelectorComponent {
   }
 
   startBenchmark() {
-    new window.Notification('Bencmark Started', {
+    new window.Notification('Benchmark Started', {
       body: `Path: "${this.selectedPath}"
       Source: "${this.selectedSource}"
       Model: "${this.selectedModel}"
@@ -92,7 +90,9 @@ export class DirSelectorComponent {
       this.selectedSource,
       this.lines
     );
-    this.benchmarkDisabled = true;
+    this.benchmarkDisabledService.setBenchmarkDisabled(true);
+    this.cdr.detectChanges();
+    console.log('HELLO', this.benchmarkDisabled);
   }
 
   generateQuery(index: number) {
@@ -115,24 +115,10 @@ export class DirSelectorComponent {
       this.cdr.detectChanges();
     });
 
-    window.electron.onBenchmarkData((message: any) => {
-      this.benchmarkDisabled = !this.benchmarkDisabled;
-      let data = JSON.parse(message);
-      console.log(data[0]);
-      this.dataSource.push(data[0]);
-      this.cdr.detectChanges();
-      console.log(this.dataSource);
-      new window.Notification('Benchmark Finished', {
-        body: `Benchmark results can now be seen in the app. `,
-      });
-      this.table.renderRows();
-      this.cdr.detectChanges();
-    });
-
     window.electron.onQuery((message: any) => {
-      let array = JSON.parse(message)
-      let query = array[0]
-      let index = array[1]
+      let array = JSON.parse(message);
+      let query = array[0];
+      let index = array[1];
       this.lines[index].query = query;
       this.queryDisabled = !this.queryDisabled;
       this.cdr.detectChanges();

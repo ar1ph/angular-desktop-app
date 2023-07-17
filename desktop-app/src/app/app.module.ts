@@ -14,9 +14,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { BenchmarkTableComponent } from './benchmark-table/benchmark-table.component';
+import { BenchmarkDisabledService } from './benchmark-disabled.service';
 
 @NgModule({
-  declarations: [AppComponent, DirSelectorComponent],
+  declarations: [AppComponent, DirSelectorComponent, BenchmarkTableComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,7 +33,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatIconModule,
   ],
-  providers: [],
+  providers: [BenchmarkDisabledService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
