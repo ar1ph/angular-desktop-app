@@ -3,6 +3,9 @@ from langchain.llms import OpenAI
 import os
 import json
 import sys
+from dotenv import load_dotenv
+
+load_dotenv()
 
 data = json.loads(sys.argv[1])
 path = data['path']
@@ -11,8 +14,8 @@ index = data['index']
 
 file_path = os.path.join(path, source)
 
-API_KEY = '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'
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = API_KEY
+#Must create .env files with the following key
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = os.getenv("API_KEY")
 
 template = """
 Given the following context. Generate a query that could be asked to an LLM. 
