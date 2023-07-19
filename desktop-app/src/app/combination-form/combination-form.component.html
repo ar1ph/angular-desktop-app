@@ -19,15 +19,23 @@
 <div class="oneLine" *ngFor="let line of lines; let i = index">
   <mat-form-field>
     <mat-label>Query</mat-label>
+    <mat-hint *ngIf="lines[i].query == ''">Please provide a query</mat-hint>
     <input matInput [(ngModel)]="line.query" />
-    <button *ngIf="line.source!=''" mat-icon-button matSuffix title="Autogenerate a query" (click)="generateQuery(i)">
+    <button
+      *ngIf="line.source != ''"
+      mat-icon-button
+      matSuffix
+      title="Autogenerate a query"
+      (click)="generateQuery(i)"
+    >
       <mat-icon *ngIf="!queryDisabled" id="genIcon">settings</mat-icon>
       <mat-spinner *ngIf="queryDisabled" diameter="20"></mat-spinner>
     </button>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Source</mat-label>
-    <mat-select [(value)]="line.source">
+    <mat-hint *ngIf="selectedPath == ''">Please select directory</mat-hint>
+    <mat-select [(value)]="line.source" [disabled]="selectedPath == ''">
       <mat-option *ngFor="let file of files" [value]="file">
         {{ file }}
       </mat-option>
@@ -58,9 +66,13 @@
     mat-raised-button
     color="primary"
     (click)="startBenchmark()"
-    [disabled]="benchmarkDisabled"
+    [disabled]="benchmarkDisabled || selectedModel == '' || selectedStrategy == '' "
   >
     Benchmark
   </button>
-  <mat-spinner id="tableSpinner"  *ngIf="benchmarkDisabled" diameter="30"></mat-spinner>
+  <mat-spinner
+    id="tableSpinner"
+    *ngIf="benchmarkDisabled"
+    diameter="30"
+  ></mat-spinner>
 </div>

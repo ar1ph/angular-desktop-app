@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DirSelectorComponent } from './dir-selector.component';
+import { DirSelectorComponent } from './combination-form.component';
 
 describe('DirSelectorComponent', () => {
   let component: DirSelectorComponent;

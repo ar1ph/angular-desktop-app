@@ -12,9 +12,9 @@ import { BenchmarkDisabledService } from '../benchmark-disabled.service';
 declare var window: any;
 
 @Component({
-  selector: 'app-dir-selector',
-  templateUrl: './dir-selector.component.html',
-  styleUrls: ['./dir-selector.component.css'],
+  selector: 'app-combination-form',
+  templateUrl: './combination-form.component.html',
+  styleUrls: ['./combination-form.component.css'],
 })
 export class DirSelectorComponent {
   files: any[] = [];
