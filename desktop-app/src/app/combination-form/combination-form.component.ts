@@ -38,10 +38,12 @@ export class DirSelectorComponent {
   queryDisabled = false;
 
   // To hold the queries and sources
-  lines: { query: string; source: string }[] = [{ query: '', source: '' }];
+  lines: { query: string; source: string; queryDisabled: boolean }[] = [
+    { query: '', source: '', queryDisabled: false },
+  ];
 
   addLine() {
-    this.lines.push({ query: '', source: '' });
+    this.lines.push({ query: '', source: '', queryDisabled: false });
   }
 
   removeLine(index: number) {
@@ -57,13 +59,17 @@ export class DirSelectorComponent {
     this.benchmarkDisabledService.benchmarkDisabled$.subscribe(
       (status: boolean) => {
         this.benchmarkDisabled = status;
-        this.cdr.detectChanges()
+        this.cdr.detectChanges();
       }
     );
   }
 
-  changeBenchmarkDisableStatus() {
-    
+  formIsEmpty() {
+    return (
+      this.selectedModel == '' ||
+      this.selectedStrategy == '' ||
+      this.lines.some((line) => line.query == '' || line.source == '')
+    );
   }
   openDirectory() {
     window.electron.openDirectory();
@@ -99,7 +105,7 @@ export class DirSelectorComponent {
     let source = this.lines[index].source;
     let path = this.selectedPath;
     window.electron.generateQuery(path, source, index);
-    this.queryDisabled = true;
+    this.lines[index].queryDisabled = true;
     console.log('PPPAATTHHH', source, path, index);
   }
 
@@ -120,7 +126,7 @@ export class DirSelectorComponent {
       let query = array[0];
       let index = array[1];
       this.lines[index].query = query;
-      this.queryDisabled = !this.queryDisabled;
+      this.lines[index].queryDisabled = false;
       this.cdr.detectChanges();
     });
   }

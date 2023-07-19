@@ -66,20 +66,37 @@ ipcMain.on("display-files", (event, path) => {
 
 ipcMain.on(
   "start-benchmark",
-  (event, selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines) => {
+  (
+    event,
+    selectedModel,
+    selectedStrategy,
+    query,
+    selectedPath,
+    selectedSource,
+    lines
+  ) => {
     let options = {
       mode: "text",
       pythonPath:
         "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
       pythonOptions: ["-u"],
       scriptPath: "./scripts",
-      args: [JSON.stringify({ selectedModel, selectedStrategy, query, selectedPath, selectedSource, lines })],
+      args: [
+        JSON.stringify({
+          selectedModel,
+          selectedStrategy,
+          query,
+          selectedPath,
+          selectedSource,
+          lines,
+        }),
+      ],
     };
 
     let pyshell = new PythonShell("Combination.py", options);
 
     pyshell.on("message", function (message) {
-      console.log("PYTHON OUTPUT---------------------------\n",message);
+      console.log("PYTHON OUTPUT---------------------------\n", message);
       event.sender.send("benchmark-data", message);
     });
 
@@ -92,32 +109,32 @@ ipcMain.on(
   }
 );
 
-ipcMain.on(
-  "generate-query",
-  (event, path, source, index) => {
-    let options = {
-      mode: "text",
-      pythonPath:
-        "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
-      pythonOptions: ["-u"],
-      scriptPath: "./scripts",
-      args: [JSON.stringify({ path, source, index })],
-    };
+ipcMain.on("generate-query", (event, path, source, index) => {
+  let options = {
+    mode: "text",
+    pythonPath:
+      "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+    pythonOptions: ["-u"],
+    scriptPath: "./scripts",
+    args: [JSON.stringify({ path, source, index })],
+  };
 
-    let pyshell = new PythonShell("QueryGeneration.py", options);
+  let pyshell = new PythonShell("QueryGeneration.py", options);
 
-    pyshell.on("message", function (message) {
-      console.log("||||||||____||||||  PYTHON QUERY---------------------------\n",message);
-      event.sender.send("query", message);
-    });
+  pyshell.on("message", function (message) {
+    console.log(
+      "||||||||____||||||  PYTHON QUERY---------------------------\n",
+      message
+    );
+    event.sender.send("query", message);
+  });
 
-    pyshell.end(function (err, code, signal) {
-      if (err) throw err;
-      console.log("The exit code was: " + code);
-      console.log("The exit signal was: " + signal);
-      console.log("finished");
-    });
-  }
-)
-
-
+  pyshell.end(function (err, code, signal) {
+    if (err) {
+      throw err;
+    }
+    console.log("The exit code was: " + code);
+    console.log("The exit signal was: " + signal);
+    console.log("finished");
+  });
+});

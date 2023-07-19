@@ -1,78 +1,80 @@
-<mat-form-field>
-  <mat-label>Model</mat-label>
-  <mat-select [(value)]="selectedModel">
-    <mat-option *ngFor="let model of models" [value]="model">
-      {{ model }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<br />
-<mat-form-field>
-  <mat-label>Strategy</mat-label>
-  <mat-select [(value)]="selectedStrategy">
-    <mat-option *ngFor="let strategy of strategies" [value]="strategy">
-      {{ strategy }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<br />
-<div class="oneLine" *ngFor="let line of lines; let i = index">
   <mat-form-field>
-    <mat-label>Query</mat-label>
-    <mat-hint *ngIf="lines[i].query == ''">Please provide a query</mat-hint>
-    <input matInput [(ngModel)]="line.query" />
-    <button
-      *ngIf="line.source != ''"
-      mat-icon-button
-      matSuffix
-      title="Autogenerate a query"
-      (click)="generateQuery(i)"
-    >
-      <mat-icon *ngIf="!queryDisabled" id="genIcon">settings</mat-icon>
-      <mat-spinner *ngIf="queryDisabled" diameter="20"></mat-spinner>
-    </button>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Source</mat-label>
-    <mat-hint *ngIf="selectedPath == ''">Please select directory</mat-hint>
-    <mat-select [(value)]="line.source" [disabled]="selectedPath == ''">
-      <mat-option *ngFor="let file of files" [value]="file">
-        {{ file }}
+    <mat-label>Model</mat-label>
+    <mat-select [(value)]="selectedModel">
+      <mat-option *ngFor="let model of models" [value]="model">
+        {{ model }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <button
-    mat-icon-button
-    aria-label="Example icon button with a vertical three dot icon"
-    (click)="removeLine(i)"
-    *ngIf="lines.length != 1"
-  >
-    <mat-icon>cancel_outline</mat-icon>
-  </button>
-</div>
-<div id="add_fab">
-  <button mat-fab extended color="primary" (click)="addLine()">
-    <mat-icon id="addIcon">add</mat-icon>Add Query
-  </button>
-</div>
-<br />
-<div class="oneLine">
-  <button mat-stroked-button (click)="openDirectory()">Select Directory</button>
-  <p>{{ selectedPath }}</p>
-</div>
-<br />
-<div class="oneLine">
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="startBenchmark()"
-    [disabled]="benchmarkDisabled || selectedModel == '' || selectedStrategy == '' "
-  >
-    Benchmark
-  </button>
-  <mat-spinner
-    id="tableSpinner"
-    *ngIf="benchmarkDisabled"
-    diameter="30"
-  ></mat-spinner>
-</div>
+  <br />
+  <mat-form-field>
+    <mat-label>Strategy</mat-label>
+    <mat-select [(value)]="selectedStrategy">
+      <mat-option *ngFor="let strategy of strategies" [value]="strategy">
+        {{ strategy }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <div class="oneLine" *ngFor="let line of lines; let i = index">
+    <mat-form-field>
+      <mat-label>Query</mat-label>
+      <mat-hint *ngIf="lines[i].query == ''">Please provide a query</mat-hint>
+      <input matInput [(ngModel)]="line.query" />
+      <button
+        *ngIf="line.source != ''"
+        mat-icon-button
+        matSuffix
+        title="Autogenerate a query"
+        (click)="generateQuery(i)"
+      >
+        <mat-icon *ngIf="!lines[i].queryDisabled" id="genIcon">settings</mat-icon>
+        <mat-spinner *ngIf="lines[i].queryDisabled" diameter="20"></mat-spinner>
+      </button>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Source</mat-label>
+      <mat-hint *ngIf="selectedPath == ''">Please select directory</mat-hint>
+      <mat-select [(value)]="line.source" [disabled]="selectedPath == ''">
+        <mat-option *ngFor="let file of files" [value]="file">
+          {{ file }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-icon-button
+      aria-label="Example icon button with a vertical three dot icon"
+      (click)="removeLine(i)"
+      *ngIf="lines.length != 1"
+    >
+      <mat-icon>cancel_outline</mat-icon>
+    </button>
+  </div>
+  <div id="add_fab">
+    <button mat-fab extended color="primary" (click)="addLine()">
+      <mat-icon id="addIcon">add</mat-icon>Add Query
+    </button>
+  </div>
+  <br />
+  <div class="oneLine">
+    <button mat-stroked-button (click)="openDirectory()">
+      Select Directory
+    </button>
+    <p>{{ selectedPath }}</p>
+  </div>
+  <br />
+  <div class="oneLine">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="startBenchmark()"
+      [disabled]="benchmarkDisabled || formIsEmpty()"
+    >
+      Benchmark
+    </button>
+    <mat-spinner
+      id="tableSpinner"
+      *ngIf="benchmarkDisabled"
+      diameter="30"
+    ></mat-spinner>
+  </div>
