@@ -2,6 +2,9 @@ const { app, BrowserWindow, ipcMain, dialog } = require("electron");
 const fs = require("fs");
 const { PythonShell } = require("python-shell");
 
+//Must create .env file with PYTHON_PATH variable pointing to your python.exe
+require('dotenv').config()
+
 let win;
 
 function createWindow() {
@@ -70,24 +73,19 @@ ipcMain.on(
     event,
     selectedModel,
     selectedStrategy,
-    query,
     selectedPath,
-    selectedSource,
     lines
   ) => {
     let options = {
       mode: "text",
-      pythonPath:
-        "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      pythonPath: process.env.PYTHON_PATH,
       pythonOptions: ["-u"],
       scriptPath: "./scripts",
       args: [
         JSON.stringify({
           selectedModel,
           selectedStrategy,
-          query,
           selectedPath,
-          selectedSource,
           lines,
         }),
       ],
@@ -112,8 +110,7 @@ ipcMain.on(
 ipcMain.on("generate-query", (event, path, source, index) => {
   let options = {
     mode: "text",
-    pythonPath:
-      "C:\\Users\\arify\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+    pythonPath:process.env.PYTHON_PATH,
     pythonOptions: ["-u"],
     scriptPath: "./scripts",
     args: [JSON.stringify({ path, source, index })],

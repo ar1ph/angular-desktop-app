@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { BenchmarkDisabledService } from '../benchmark-disabled.service';
@@ -17,6 +11,7 @@ declare var window: any;
   styleUrls: ['./benchmark-table.component.css'],
 })
 export class BenchmarkTableComponent {
+  //Columns to display in the table
   displayedColumns: string[] = [
     'Embedding Model',
     'DB Type',
@@ -27,6 +22,7 @@ export class BenchmarkTableComponent {
     'Queries',
   ];
 
+  // Storage for table data
   dataSource: any[] = [
     {
       'Embedding Model': 'TEST_ROW',
@@ -47,6 +43,7 @@ export class BenchmarkTableComponent {
     private cdr: ChangeDetectorRef,
     private benchmarkDisabledService: BenchmarkDisabledService
   ) {
+    // Subscribe to variable from parent element using service
     this.benchmarkDisabledService.benchmarkDisabled$.subscribe(
       (status: boolean) => {
         this.benchmarkDisabled = status;
@@ -54,9 +51,10 @@ export class BenchmarkTableComponent {
     );
   }
   ngOnInit() {
+    // Receiving benchmark data from python script
     window.electron.onBenchmarkData((message: any) => {
       this.benchmarkDisabledService.setBenchmarkDisabled(false);
-      this.cdr.detectChanges();      let data = JSON.parse(message);
+      let data = JSON.parse(message);
       console.log(data[0]);
       this.dataSource.push(data[0]);
       this.cdr.detectChanges();
@@ -64,6 +62,7 @@ export class BenchmarkTableComponent {
       new window.Notification('Benchmark Finished', {
         body: `Benchmark results can now be seen in the app. `,
       });
+      //Ensure table is updated
       this.table.renderRows();
       this.cdr.detectChanges();
     });

@@ -30,8 +30,7 @@ export class DirSelectorComponent {
   selectedModel = '';
   selectedStrategy = '';
 
-  query = '';
-  selectedSource = '';
+
   selectedPath: string = '';
 
   benchmarkDisabled = false;
@@ -82,45 +81,44 @@ export class DirSelectorComponent {
   startBenchmark() {
     new window.Notification('Benchmark Started', {
       body: `Path: "${this.selectedPath}"
-      Source: "${this.selectedSource}"
       Model: "${this.selectedModel}"
-      Strategy: "${this.selectedStrategy}"
-      Query: "${this.query}"
-      `,
+      Strategy: "${this.selectedStrategy}"   `,
     });
     window.electron.startBenchmark(
       this.selectedModel,
       this.selectedStrategy,
-      this.query,
       this.selectedPath,
-      this.selectedSource,
       this.lines
     );
     this.benchmarkDisabledService.setBenchmarkDisabled(true);
     this.cdr.detectChanges();
-    console.log('HELLO', this.benchmarkDisabled);
+    console.log('DISABLED TEST', this.benchmarkDisabled);
   }
 
+  //Send filepath to python script to generate query
   generateQuery(index: number) {
     let source = this.lines[index].source;
     let path = this.selectedPath;
     window.electron.generateQuery(path, source, index);
     this.lines[index].queryDisabled = true;
-    console.log('PPPAATTHHH', source, path, index);
+    console.log('PATH', source, path, index);
   }
 
   ngOnInit() {
+    //Directory is selected
     window.electron.onDirectorySelected((path: any) => {
       this.selectedPath = path;
       this.cdr.detectChanges();
       this.displayFiles();
     });
 
+    //Receiving files in directory
     window.electron.onDirectoryFiles((content: any) => {
       this.files = content;
       this.cdr.detectChanges();
     });
 
+    //Receiving query
     window.electron.onQuery((message: any) => {
       let array = JSON.parse(message);
       let query = array[0];
